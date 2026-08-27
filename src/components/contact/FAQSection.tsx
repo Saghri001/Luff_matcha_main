@@ -133,7 +133,7 @@ export const FAQSection: React.FC = () => {
   }, [activeCategory, searchQuery]);
 
   return (
-    <section id="faq" className="py-28 bg-[#FAF7F2] border-t border-[#EAE3D8] relative overflow-hidden">
+    <section id="faq" className="pt-6 pb-16 sm:pb-20 bg-[#FAF7F2] relative overflow-hidden">
       
       {/* Subtle Ambient Radial Glows */}
       <div

@@ -129,7 +129,7 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
     <section
       ref={sectionRef}
       id="catalog"
-      className="relative w-full h-[180vh] transition-colors duration-300 ease-out border-t border-[#EAE3D8]"
+      className="relative w-full h-[180vh] transition-colors duration-300 ease-out"
       style={{ backgroundColor: activeTheme.bg }}
     >
       {/* Sticky Full-Viewport Stage */}
