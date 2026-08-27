@@ -368,38 +368,37 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
         )}
 
         {/* =========================================================================
-            STAGE 1: EDITORIAL HERO LANDING (0% -> 20% Scroll)
+            STAGE 1: EDITORIAL HERO LANDING (Single-Viewport Stage)
         ========================================================================= */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-center"
+          className="absolute top-[106px] bottom-0 left-0 right-0 h-[calc(100svh-106px)] z-10 pointer-events-none flex flex-col justify-center py-4"
           style={{
             opacity: stage1Opacity,
             transform: `translate3d(0, ${stage1Y}px, 0)`,
             display: stage1Opacity <= 0 ? 'none' : 'flex',
-            paddingTop: `${TOP_BARS}px`,
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
               
               {/* Left Column Content */}
               <div className="lg:col-span-6 pointer-events-auto text-left">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#EAE3D8] text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-4 shadow-xs">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#EAE3D8] text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-3 shadow-2xs">
                   <span>01 // KYOTO FIRST HARVEST • 100% ORGANIC</span>
                 </div>
 
-                <h1 className="font-sans font-black text-4xl sm:text-6xl xl:text-7xl tracking-tight text-[#15191E] uppercase leading-[0.92] mb-4 drop-shadow-xs">
+                <h1 className="font-sans font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight text-[#15191E] uppercase leading-[0.94] mb-3 drop-shadow-xs">
                   ENERGY WITHOUT THE JITTERS.
                 </h1>
 
-                <p className="text-base sm:text-lg text-[#15191E]/80 max-w-lg font-editorial-serif italic mb-6 leading-relaxed">
+                <p className="text-sm sm:text-base text-[#15191E]/80 max-w-lg font-editorial-serif italic mb-5 leading-relaxed">
                   Single-estate ceremonial Uji matcha & adaptogenic mushrooms, stone-milled to 5 microns on granite wheels.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3">
                   <button
                     onClick={() => handleAddProduct(matchaProduct)}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#E53935] hover:bg-[#C62828] text-white font-extrabold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#E53935] hover:bg-[#C62828] text-white font-extrabold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95"
                   >
                     <span>
                       {addedSkuId === matchaProduct.id ? 'Added to Bag ✓' : 'Add Matcha Tin • $28'}
@@ -409,7 +408,7 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
 
                   <button
                     onClick={() => scrollTo('#catalog')}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/90 hover:bg-white border border-[#EAE3D8] text-[#15191E] font-extrabold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-xs"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/90 hover:bg-white border border-[#EAE3D8] text-[#15191E] font-extrabold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-2xs"
                   >
                     <span>Explore Blends</span>
                     <ArrowRight className="w-3.5 h-3.5 text-[#E53935]" />
@@ -417,13 +416,13 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
                 </div>
 
                 {/* Rating Badge */}
-                <div className="mt-8 flex items-center gap-3">
+                <div className="mt-5 flex items-center gap-2.5">
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-3.5 h-3.5 fill-[#E53935] text-[#E53935]" />
                     ))}
                   </div>
-                  <span className="text-xs font-mono font-bold text-[#15191E]/70 uppercase">
+                  <span className="text-[11px] sm:text-xs font-mono font-bold text-[#15191E]/75 uppercase tracking-wide">
                     4.9/5 Rating from 1,200+ Creators
                   </span>
                 </div>
@@ -443,15 +442,14 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
         </div>
 
         {/* =========================================================================
-            STAGE 2: KINETIC IDENTITY & VALUE PILLARS (20% -> 38% Scroll)
+            STAGE 2: KINETIC IDENTITY & VALUE PILLARS
         ========================================================================= */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between py-12"
+          className="absolute top-[106px] bottom-0 left-0 right-0 h-[calc(100svh-106px)] z-10 pointer-events-none flex flex-col justify-between py-6 pb-12"
           style={{
             opacity: stage2Opacity,
             transform: `translate3d(0, ${stage2Y}px, 0)`,
             display: stage2Opacity <= 0 ? 'none' : 'flex',
-            paddingTop: `${TOP_BARS}px`,
           }}
         >
           {/* Top kinetic banner flowing behind/above product */}
@@ -510,15 +508,14 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
         </div>
 
         {/* =========================================================================
-            STAGE 3: THE ADAPTOGENIC SOLUTION & CLEAN ENERGY (38% -> 58% Scroll)
+            STAGE 3: THE ADAPTOGENIC SOLUTION & CLEAN ENERGY
         ========================================================================= */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-center"
+          className="absolute top-[106px] bottom-0 left-0 right-0 h-[calc(100svh-106px)] z-10 pointer-events-none flex flex-col justify-center py-4 pb-12"
           style={{
             opacity: stage3Opacity,
             transform: `translate3d(0, ${stage3Y}px, 0)`,
             display: stage3Opacity <= 0 ? 'none' : 'flex',
-            paddingTop: `${TOP_BARS}px`,
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -641,37 +638,36 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
         </div>
 
         {/* =========================================================================
-            STAGE 4: STANDOUT FEATURE ANATOMY & EXPLODED VIEW (58% -> 78% Scroll)
+            STAGE 4: STANDOUT FEATURE ANATOMY & EXPLODED VIEW
         ========================================================================= */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-center"
+          className="absolute top-[106px] bottom-0 left-0 right-0 h-[calc(100svh-106px)] z-10 pointer-events-none flex flex-col justify-center py-2 pb-14"
           style={{
             opacity: stage4Opacity,
             transform: `translate3d(0, ${stage4Y}px, 0)`,
             display: stage4Opacity <= 0 ? 'none' : 'flex',
-            paddingTop: `${TOP_BARS}px`,
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             
             {/* Header */}
-            <div className="text-center mb-8 pointer-events-auto">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#EAE3D8] text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-2 shadow-xs">
+            <div className="text-center mb-4 sm:mb-5 pointer-events-auto">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-[#EAE3D8] text-[#E53935] text-[11px] font-mono font-black uppercase tracking-widest mb-1.5 shadow-2xs">
                 <span>03 // UNRIVALED CRAFTSMANSHIP</span>
               </div>
-              <h2 className="font-sans font-black text-3xl sm:text-5xl text-[#15191E] tracking-tight uppercase">
+              <h2 className="font-sans font-black text-2xl sm:text-4xl text-[#15191E] tracking-tight uppercase">
                 WHAT MAKES LUFF STAND OUT
               </h2>
-              <p className="text-sm sm:text-base text-[#15191E]/70 font-editorial-serif italic mt-1">
+              <p className="text-xs sm:text-sm text-[#15191E]/70 font-editorial-serif italic mt-0.5">
                 The essential formula for calm cognitive energy and clean biological stamina.
               </p>
             </div>
 
-            {/* Exploded feature badges flanking the explosive powder burst */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Exploded feature badges flanking the powder burst */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
               
               {/* Left Flank (3 Feature Callouts) */}
-              <div className="lg:col-span-4 pointer-events-auto flex flex-col gap-4">
+              <div className="lg:col-span-4 pointer-events-auto flex flex-col gap-2.5 sm:gap-3">
                 {[
                   {
                     num: '01',
@@ -694,14 +690,14 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
                 ].map((item, idx) => (
                   <div
                     key={item.num}
-                    className="bg-white/90 backdrop-blur-md border border-[#EAE3D8] p-4 sm:p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-500 ease-out"
+                    className="bg-white/90 backdrop-blur-md border border-[#EAE3D8] p-3.5 sm:p-4 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-1 transition-all duration-500 ease-out"
                     style={{
                       transform: isStage4Active ? 'translateY(0) scale(1)' : 'translateY(24px) scale(0.96)',
                       opacity: isStage4Active ? 1 : 0,
                       transitionDelay: `${idx * 80}ms`,
                     }}
                   >
-                    <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center justify-between mb-1">
                       <span className="font-mono text-[10px] font-black text-[#E53935] tracking-widest">
                         // {item.num}
                       </span>
@@ -709,10 +705,10 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
                         {item.tag}
                       </span>
                     </div>
-                    <div className="text-sm font-black text-[#15191E] mb-1">
+                    <div className="text-xs sm:text-sm font-black text-[#15191E] mb-0.5">
                       {item.title}
                     </div>
-                    <p className="text-xs text-[#15191E]/75 leading-relaxed">
+                    <p className="text-[11px] sm:text-xs text-[#15191E]/75 leading-relaxed">
                       {item.desc}
                     </p>
                   </div>
@@ -723,7 +719,7 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
               <div className="hidden lg:block lg:col-span-4" />
 
               {/* Right Flank (3 Feature Callouts) */}
-              <div className="lg:col-span-4 pointer-events-auto flex flex-col gap-4">
+              <div className="lg:col-span-4 pointer-events-auto flex flex-col gap-2.5 sm:gap-3">
                 {[
                   {
                     num: '04',
@@ -746,14 +742,14 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
                 ].map((item, idx) => (
                   <div
                     key={item.num}
-                    className="bg-white/90 backdrop-blur-md border border-[#EAE3D8] p-4 sm:p-5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-500 ease-out"
+                    className="bg-white/90 backdrop-blur-md border border-[#EAE3D8] p-3.5 sm:p-4 rounded-2xl shadow-2xs hover:shadow-md hover:-translate-y-1 transition-all duration-500 ease-out"
                     style={{
                       transform: isStage4Active ? 'translateY(0) scale(1)' : 'translateY(24px) scale(0.96)',
                       opacity: isStage4Active ? 1 : 0,
                       transitionDelay: `${(idx + 3) * 80}ms`,
                     }}
                   >
-                    <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center justify-between mb-1">
                       <span className="font-mono text-[10px] font-black text-[#E53935] tracking-widest">
                         // {item.num}
                       </span>
@@ -761,10 +757,10 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
                         {item.tag}
                       </span>
                     </div>
-                    <div className="text-sm font-black text-[#15191E] mb-1">
+                    <div className="text-xs sm:text-sm font-black text-[#15191E] mb-0.5">
                       {item.title}
                     </div>
-                    <p className="text-xs text-[#15191E]/75 leading-relaxed">
+                    <p className="text-[11px] sm:text-xs text-[#15191E]/75 leading-relaxed">
                       {item.desc}
                     </p>
                   </div>
@@ -776,15 +772,14 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
         </div>
 
         {/* =========================================================================
-            STAGE 5: 3-STEP DAILY RITUAL (78% -> 100% Scroll)
+            STAGE 5: 3-STEP DAILY RITUAL
         ========================================================================= */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-center"
+          className="absolute top-[106px] bottom-0 left-0 right-0 h-[calc(100svh-106px)] z-10 pointer-events-none flex flex-col justify-center py-4 pb-14"
           style={{
             opacity: stage5Opacity,
             transform: `translate3d(0, ${stage5Y}px, 0)`,
             display: stage5Opacity <= 0 ? 'none' : 'flex',
-            paddingTop: `${TOP_BARS}px`,
           }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -873,12 +868,6 @@ export const FullPageScrollStage: React.FC<FullPageScrollStageProps> = ({
             style={{ width: `${progress * 100}%` }}
           />
         </div>
-
-        {/* Soft Bottom Dissolve Gradient into Catalog Section */}
-        <div
-          aria-hidden="true"
-          className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-b from-transparent via-[#FAF7F2]/60 to-[#EEF6F0] pointer-events-none z-20"
-        />
 
       </div>
     </section>

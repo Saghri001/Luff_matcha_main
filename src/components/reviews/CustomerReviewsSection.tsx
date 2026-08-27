@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Star, CheckCircle2, Quote, ArrowRight, Heart } from 'lucide-react';
 
 export const CustomerReviewsSection: React.FC = () => {
-  const [filter, setFilter] = useState<'all' | 'matcha' | 'coffee' | 'bundle'>('all');
+  const [filter, setFilter] = useState<'all' | 'matcha' | 'coffee'>('all');
 
   const reviews = [
     {
@@ -67,16 +67,16 @@ export const CustomerReviewsSection: React.FC = () => {
   return (
     <section
       id="reviews"
-      className="relative py-28 bg-[#15191E] text-white overflow-hidden border-t border-[#15191E]"
+      className="relative py-28 bg-[#141C18] text-[#FAF7F2] overflow-hidden border-t border-[#1F2922]"
     >
       {/* Immersive Ambient Glows */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/4 w-[600px] h-[600px] rounded-full bg-[#4A7C59]/15 blur-[120px]"
+        className="pointer-events-none absolute -top-40 left-1/4 w-[600px] h-[600px] rounded-full bg-[#4A7C59]/20 blur-[130px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 right-1/4 w-[600px] h-[600px] rounded-full bg-[#E53935]/15 blur-[120px]"
+        className="pointer-events-none absolute -bottom-40 right-1/4 w-[600px] h-[600px] rounded-full bg-[#E53935]/12 blur-[130px]"
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
@@ -84,27 +84,27 @@ export const CustomerReviewsSection: React.FC = () => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-3 backdrop-blur-md border border-white/10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1E2922] text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-3 backdrop-blur-md border border-[#2D3A32]">
               <span>03 // VERIFIED COMMUNITY EXPERIENCE</span>
             </div>
-            <h2 className="font-sans font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">
+            <h2 className="font-sans font-black text-3xl sm:text-5xl text-[#FAF7F2] tracking-tight uppercase">
               PRAISE FROM THE FLOW STATE
             </h2>
-            <p className="text-sm sm:text-base text-gray-400 font-editorial-serif italic mt-2 max-w-xl">
+            <p className="text-sm sm:text-base text-[#A3B8AB] font-editorial-serif italic mt-2 max-w-xl">
               Read how creators, designers, and scientists sustain their daily output with LUFF.
             </p>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 overflow-x-auto no-scrollbar">
-            {(['all', 'matcha', 'coffee', 'bundle'] as const).map((cat) => (
+          <div className="flex items-center gap-2 bg-[#1E2922]/90 p-1.5 rounded-2xl border border-[#2D3A32] overflow-x-auto no-scrollbar">
+            {(['all', 'matcha', 'coffee'] as const).map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
                 className={`px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all whitespace-nowrap ${
                   filter === cat
                     ? 'bg-[#E53935] text-white shadow-md'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    : 'text-[#A3B8AB] hover:text-white hover:bg-white/5'
                 }`}
               >
                 {cat === 'all' ? 'All Reviews' : cat}
@@ -123,12 +123,12 @@ export const CustomerReviewsSection: React.FC = () => {
           ].map((stat, idx) => (
             <div
               key={idx}
-              className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl text-center flex flex-col justify-center"
+              className="bg-[#1E2922]/70 backdrop-blur-md border border-[#2D3A32] p-5 rounded-2xl text-center flex flex-col justify-center shadow-xs"
             >
-              <div className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight">
+              <div className="font-sans font-black text-2xl sm:text-3xl text-[#FAF7F2] tracking-tight">
                 {stat.metric}
               </div>
-              <div className="text-[11px] font-mono font-semibold text-gray-400 uppercase mt-1">
+              <div className="text-[11px] font-mono font-semibold text-[#A3B8AB] uppercase mt-1">
                 {stat.label}
               </div>
             </div>
@@ -146,7 +146,7 @@ export const CustomerReviewsSection: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35 }}
-                className="bg-white/[0.04] hover:bg-white/[0.07] backdrop-blur-md border border-white/10 rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 group hover:border-white/20"
+                className="bg-[#1D2721]/90 hover:bg-[#232F28] backdrop-blur-md border border-[#2D3A32] rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 group hover:border-[#4A7C59]/50 shadow-sm"
               >
                 <div>
                   {/* Top Bar: Stars + Product Tag */}
@@ -156,30 +156,30 @@ export const CustomerReviewsSection: React.FC = () => {
                         <Star key={i} className="w-4 h-4 fill-[#E53935] text-[#E53935]" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-white/10 text-gray-300">
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-[#141C18] text-[#A3B8AB] border border-[#2D3A32]">
                       {rev.impact}
                     </span>
                   </div>
 
                   {/* Quote */}
-                  <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-sans font-medium mb-6">
+                  <p className="text-sm sm:text-base text-[#E4EBE6] leading-relaxed font-sans font-medium mb-6">
                     "{rev.quote}"
                   </p>
                 </div>
 
                 {/* Bottom Author Details */}
-                <div className="pt-5 border-t border-white/10 flex items-end justify-between gap-4">
+                <div className="pt-5 border-t border-[#2D3A32] flex items-end justify-between gap-4">
                   <div>
-                    <h4 className="font-sans font-black text-base text-white flex items-center gap-2">
+                    <h4 className="font-sans font-black text-base text-[#FAF7F2] flex items-center gap-2">
                       <span>{rev.name}</span>
                       <CheckCircle2 className="w-4 h-4 text-[#4A7C59]" />
                     </h4>
-                    <p className="text-xs text-gray-400 font-sans">{rev.role}</p>
-                    <span className="text-[11px] font-mono text-[#E53935]/90 mt-0.5 block">
+                    <p className="text-xs text-[#A3B8AB] font-sans">{rev.role}</p>
+                    <span className="text-[11px] font-mono text-[#E53935] mt-0.5 block font-bold">
                       Ordered: {rev.drink}
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-gray-500 shrink-0 text-right">
+                  <span className="text-[10px] font-mono text-[#7D9486] shrink-0 text-right">
                     {rev.date}
                   </span>
                 </div>
@@ -189,12 +189,6 @@ export const CustomerReviewsSection: React.FC = () => {
         </div>
 
       </div>
-
-      {/* Soft Bottom Transition Gradient into Cream FAQ Section */}
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#15191E]/90 to-[#FAF7F2] pointer-events-none z-20"
-      />
     </section>
   );
 };

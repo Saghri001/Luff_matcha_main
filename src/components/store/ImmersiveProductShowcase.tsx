@@ -31,7 +31,7 @@ interface ProductTheme {
 
 const THEMES: Record<string, ProductTheme> = {
   'luff-mushroom-matcha-30g': {
-    bg: '#EEF6F0',
+    bg: '#FAF7F2',
     glow: 'rgba(116, 178, 76, 0.45)',
     accent: '#4A7C59',
     orbColor: '#74B24C',
@@ -129,7 +129,7 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
     <section
       ref={sectionRef}
       id="catalog"
-      className="relative w-full h-[180vh] transition-colors duration-300 ease-out"
+      className="relative w-full h-[180vh] transition-colors duration-300 ease-out border-t border-[#EAE3D8]"
       style={{ backgroundColor: activeTheme.bg }}
     >
       {/* Sticky Full-Viewport Stage */}
@@ -544,12 +544,6 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
           </div>
 
         </div>
-
-        {/* Soft Bottom Transition Gradient into Dark Reviews Section */}
-        <div
-          aria-hidden="true"
-          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#FAF7F2]/40 to-[#15191E] pointer-events-none z-20"
-        />
 
       </div>
     </section>
