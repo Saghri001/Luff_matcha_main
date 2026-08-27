@@ -1,7 +1,7 @@
 import { ProductItem, PromoCode, ShippingOption } from './types';
-import mushroomMatchaImg from '../../assets/products/mushroom_matcha.jpeg';
-import mushroomCoffeeImg from '../../assets/products/mushroom_coffee.jpeg';
-import heroIcedMatchaImg from '../../assets/images/luff_iced_matcha_hero_1787223577925.jpg';
+import mushroomMatchaImg from '../../assets/products/mushroom_matcha_transparent.png';
+import mushroomCoffeeImg from '../../assets/products/mushroom_coffee_transparent.png';
+import bundleImg from '../../assets/products/bundle_transparent.png';
 
 export const INITIAL_PRODUCTS: ProductItem[] = [
   {
@@ -28,37 +28,17 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: 'coffee',
     price: 24.00,
     stockCount: 30,
-    description: 'Single-origin Guatemalan dark roast Arabica coffee infused with wild-harvested Chaga & Cordyceps mushrooms.',
+    description: 'Single-origin Guatemalan dark roast infused with wild Chaga & Cordyceps for clean stamina and low acidity.',
     longDescription: 'Artisanal micro-roasted Guatemalan Arabica beans combined with 1,500mg dual-extracted Chaga & Cordyceps. Delivers clean physical stamina, digestive comfort, and half the caffeine of standard drip coffee.',
     badge: 'Clean Energy',
     image: mushroomCoffeeImg,
     tags: ['Clean Stamina', 'Guatemala Arabica', 'Chaga & Cordyceps', 'Low Acid'],
-    volumeOrWeight: '250g Whole Bean / Milled',
+    volumeOrWeight: '250g Milled',
     flavorNotes: ['Dark Chocolate', 'Toasted Almond', 'Wild Honey'],
     caffeineMg: 50,
     lTheanineMg: 30,
-    origin: 'Huehuetenango, Guatemala & Finland',
+    origin: 'Huehuetenango, Guatemala',
     isNew: true,
-    isPopular: true,
-  },
-  {
-    id: 'luff-daily-ritual-bundle',
-    name: 'LUFF Daily Ritual Bundle',
-    category: 'tins',
-    price: 46.00,
-    salePrice: 46.00,
-    isOnSale: true,
-    stockCount: 20,
-    description: 'The ultimate daily flow kit: 1x Organic Mushroom Matcha (30g) + 1x Organic Mushroom Coffee (250g) + Free Solid Brass Measuring Scoop.',
-    longDescription: 'Combine morning stamina with afternoon calm. Includes our full-size 30g Ceremonial Mushroom Matcha tin, 250g Mushroom Coffee bag, and a custom gold brass measuring scoop ($15 value). Save 15% when purchased together.',
-    badge: 'Save 15%',
-    image: heroIcedMatchaImg,
-    tags: ['Complete Flow Kit', 'Includes Free Brass Scoop', 'Save 15%', 'Free Shipping'],
-    volumeOrWeight: 'Full Kit + Free Brass Scoop',
-    flavorNotes: ['Matcha + Coffee Flow'],
-    caffeineMg: 50,
-    lTheanineMg: 60,
-    origin: 'Uji, Kyoto & Guatemala',
     isPopular: true,
   },
 ];

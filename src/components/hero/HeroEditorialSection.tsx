@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ShoppingBag, Sparkles, Check, Eye, Award, Leaf } from 'lucide-react';
+import { ShoppingBag, Check, Eye, Award, Leaf } from 'lucide-react';
 import { ProductItem } from '../../lib/store/types';
 import heroBackdrop from '../../assets/images/luff_iced_matcha_hero_1787223577925.jpg';
 
@@ -80,7 +80,6 @@ export const HeroEditorialSection: React.FC<HeroEditorialSectionProps> = ({
           className="flex-1 flex flex-col items-center justify-center text-center gap-4 max-w-4xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/25 text-white text-xs font-mono font-black uppercase tracking-widest shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-[#E53935]" />
             <span>Kyoto First Harvest • 100% Organic</span>
           </div>
 

@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Sparkles,
   ShoppingBag,
-  Plus,
-  Minus,
   Check,
   Eye,
   ShieldCheck,
   Leaf,
   Zap,
-  Star,
-  Flame,
-  ArrowRight,
+  Truck,
 } from 'lucide-react';
 import { ProductItem, CartItem } from '../../lib/store/types';
 
@@ -28,66 +23,64 @@ interface ProductTheme {
   bg: string;
   glow: string;
   accent: string;
+  orbColor: string;
   pillBg: string;
   pillText: string;
-  borderColor: string;
+  watermark: string;
 }
 
 const THEMES: Record<string, ProductTheme> = {
   'luff-mushroom-matcha-30g': {
     bg: '#EEF6F0',
-    glow: 'rgba(116, 178, 76, 0.40)',
+    glow: 'rgba(116, 178, 76, 0.45)',
     accent: '#4A7C59',
+    orbColor: '#74B24C',
     pillBg: '#DDF0FF',
     pillText: '#15191E',
-    borderColor: '#C3E0CC',
+    watermark: 'matcha',
   },
   'luff-mushroom-coffee-250g': {
-    bg: '#FBF0EB',
-    glow: 'rgba(229, 57, 53, 0.35)',
+    bg: '#FAF0EB',
+    glow: 'rgba(229, 57, 53, 0.40)',
     accent: '#E53935',
+    orbColor: '#E53935',
     pillBg: '#FDECEB',
     pillText: '#C62828',
-    borderColor: '#F8C4C1',
-  },
-  'luff-daily-ritual-bundle': {
-    bg: '#FAF4E4',
-    glow: 'rgba(225, 160, 30, 0.40)',
-    accent: '#B8860B',
-    pillBg: '#F5ECCB',
-    pillText: '#855E00',
-    borderColor: '#E6D399',
+    watermark: 'coffee',
   },
 };
 
 const DEFAULT_THEME: ProductTheme = {
   bg: '#FAF7F2',
-  glow: 'rgba(229, 57, 53, 0.25)',
+  glow: 'rgba(229, 57, 53, 0.35)',
   accent: '#E53935',
+  orbColor: '#E53935',
   pillBg: '#F4EFE6',
   pillText: '#15191E',
-  borderColor: '#EAE3D8',
+  watermark: 'luff',
 };
 
 export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> = ({
   products,
   cart,
   onAddToCart,
-  onUpdateCartQty,
   onOpenQuickView,
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [justAddedId, setJustAddedId] = useState<string | null>(null);
 
-  const activeProduct = products[activeIdx] || products[0];
-  const activeTheme = THEMES[activeProduct.id] || DEFAULT_THEME;
+  // Strictly only the first two core formulas
+  const displayProducts = products
+    .filter(
+      (p) =>
+        p.id === 'luff-mushroom-matcha-30g' ||
+        p.id === 'luff-mushroom-coffee-250g'
+    )
+    .slice(0, 2);
 
-  const getQtyInCart = (productId: string) => {
-    return cart
-      .filter((i) => i.product.id === productId)
-      .reduce((sum, i) => sum + i.quantity, 0);
-  };
+  const activeProduct = displayProducts[activeIdx] || displayProducts[0] || products[0];
+  const activeTheme = THEMES[activeProduct.id] || DEFAULT_THEME;
 
   const handleAdd = (product: ProductItem) => {
     if (product.stockCount <= 0) return;
@@ -96,10 +89,10 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
     setTimeout(() => setJustAddedId(null), 1400);
   };
 
-  // Pinned scroll scrubber to change products as user scrolls through the showcase track
+  // Instant, responsive scroll scrubber without lag or delay
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el) return;
+    if (!el || displayProducts.length <= 1) return;
 
     let rafId: number;
 
@@ -109,12 +102,13 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
       if (totalScrollable <= 0) return;
 
       const progress = Math.min(1, Math.max(0, -rect.top / totalScrollable));
-      const targetIdx = Math.min(
-        products.length - 1,
-        Math.floor(progress * products.length)
-      );
 
-      setActiveIdx((prev) => (prev !== targetIdx ? targetIdx : prev));
+      // Responsive hysteresis threshold for immediate, crisp switching
+      setActiveIdx((current) => {
+        if (current === 0 && progress >= 0.35) return 1;
+        if (current === 1 && progress < 0.35) return 0;
+        return current;
+      });
     };
 
     const handleScrollThrottled = () => {
@@ -129,45 +123,93 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
       window.removeEventListener('scroll', handleScrollThrottled);
       cancelAnimationFrame(rafId);
     };
-  }, [products.length]);
+  }, [displayProducts.length]);
 
   return (
     <section
       ref={sectionRef}
       id="catalog"
-      className="relative w-full h-[320vh] transition-colors duration-700 ease-out"
+      className="relative w-full h-[180vh] transition-colors duration-300 ease-out"
       style={{ backgroundColor: activeTheme.bg }}
     >
       {/* Sticky Full-Viewport Stage */}
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden flex flex-col justify-center select-none">
 
-        {/* Ambient Dynamic Background Halo */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[100px] transition-all duration-700 opacity-70"
-          style={{ backgroundColor: activeTheme.glow }}
-        />
+        {/* 1. Subtle Precision Circular Dial with Radial Aura */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          
+          {/* Radial Glowing Aura */}
+          <div
+            aria-hidden="true"
+            className="absolute w-[580px] h-[580px] rounded-full blur-[110px] transition-all duration-300 opacity-80"
+            style={{ backgroundColor: activeTheme.glow }}
+          />
 
-        {/* Watermark brand title behind product */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden opacity-[0.04] transition-opacity duration-700"
-        >
-          <span className="font-sans font-black text-[22vw] leading-none uppercase tracking-tighter text-[#15191E]">
-            {activeIdx === 0 ? 'MATCHA' : activeIdx === 1 ? 'COFFEE' : 'BUNDLE'}
-          </span>
+          {/* Precision Circular Orbit & Ticks Dial */}
+          <svg
+            className="absolute w-[620px] h-[620px] opacity-25 transition-all duration-300 text-[#15191E]"
+            viewBox="0 0 620 620"
+          >
+            <circle
+              cx="310"
+              cy="310"
+              r="280"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeDasharray="4 8"
+            />
+            <circle
+              cx="310"
+              cy="310"
+              r="230"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.8"
+              strokeDasharray="2 6"
+              opacity="0.6"
+            />
+            {[...Array(36)].map((_, i) => {
+              const angle = (i * 10 * Math.PI) / 180;
+              const isMajor = i % 3 === 0;
+              const r1 = 285;
+              const r2 = isMajor ? 300 : 292;
+              const x1 = 310 + r1 * Math.cos(angle);
+              const y1 = 310 + r1 * Math.sin(angle);
+              const x2 = 310 + r2 * Math.cos(angle);
+              const y2 = 310 + r2 * Math.sin(angle);
+              return (
+                <line
+                  key={i}
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke="currentColor"
+                  strokeWidth={isMajor ? '1.5' : '1'}
+                  opacity={isMajor ? '0.8' : '0.4'}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Soft Cursive Watermark behind Product */}
+          <div className="absolute flex items-center justify-center select-none pointer-events-none">
+            <span className="font-editorial-serif italic text-7xl sm:text-9xl text-[#15191E]/[0.08] transition-all duration-300 tracking-tighter capitalize">
+              {activeTheme.watermark}
+            </span>
+          </div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
 
-          {/* Section Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          {/* Top Stage Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#EAE3D8] text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-2 shadow-xs">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-[#EAE3D8] text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-1.5 shadow-2xs">
                 <span>02 // THE LUFF COLLECTION • IMMERSIVE SHOWCASE</span>
               </div>
-              <h2 className="font-sans font-black text-3xl sm:text-5xl text-[#15191E] tracking-tight uppercase">
+              <h2 className="font-sans font-black text-3xl sm:text-5xl text-[#15191E] tracking-tight uppercase leading-tight">
                 SELECT YOUR FORMULA
               </h2>
             </div>
@@ -175,283 +217,310 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
             {/* Step Counter Indicator */}
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#15191E]/60">
-                Formula {activeIdx + 1} of {products.length}
+                Formula {activeIdx + 1} of 2
               </span>
               <div className="flex gap-1.5">
-                {products.map((_, i) => (
+                {[0, 1].map((i) => (
                   <button
                     key={i}
                     onClick={() => setActiveIdx(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                       activeIdx === i
                         ? 'w-8 bg-[#E53935]'
                         : 'w-2 bg-[#15191E]/20 hover:bg-[#15191E]/40'
                     }`}
-                    aria-label={`Go to product ${i + 1}`}
+                    aria-label={`Go to formula ${i + 1}`}
                   />
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Three-Column Flanked Layout matching the Reference Video */}
+          {/* Main 3-Column Layout: Left Arc Selector -> Center Borderless Product -> Right Description */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
 
-            {/* Left Flank: Interactive Formula Switcher List */}
-            <div className="lg:col-span-4 flex flex-col gap-3">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#15191E]/60 mb-1">
-                Explore Formulas:
+            {/* =========================================================================
+                LEFT FLANK: ARC FORMATION (Formula Images in Circle + Name directly in front)
+            ========================================================================= */}
+            <div className="lg:col-span-3 flex flex-col gap-3 relative">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#15191E]/60 mb-2 pl-3">
+                Formulas:
               </span>
 
-              {products.map((p, idx) => {
-                const isActive = activeIdx === idx;
-                const theme = THEMES[p.id] || DEFAULT_THEME;
-                const inCart = getQtyInCart(p.id);
+              <div className="flex flex-col gap-4 relative">
+                {displayProducts.map((p, idx) => {
+                  const isActive = activeIdx === idx;
+                  const theme = THEMES[p.id] || DEFAULT_THEME;
+                  const arcX = -18;
 
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => setActiveIdx(idx)}
-                    className={`text-left p-4 rounded-3xl border transition-all duration-400 relative overflow-hidden group ${
-                      isActive
-                        ? 'bg-white shadow-xl scale-[1.02]'
-                        : 'bg-white/70 hover:bg-white/90 border-[#EAE3D8]'
-                    }`}
-                    style={{
-                      borderColor: isActive ? theme.accent : '#EAE3D8',
-                      boxShadow: isActive
-                        ? `0 14px 34px -10px ${theme.glow}`
-                        : undefined,
-                    }}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        {/* Thumbnail */}
-                        <div className="relative w-12 h-12 rounded-2xl overflow-hidden bg-[#FAF7F2] shrink-0 border border-[#EAE3D8]">
-                          <img
-                            src={p.image}
-                            alt={p.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                          />
-                          {isActive && (
-                            <div
-                              className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full ring-2 ring-white"
-                              style={{ backgroundColor: theme.accent }}
-                            />
-                          )}
-                        </div>
-
-                        <div>
-                          {p.badge && (
-                            <span
-                              className="inline-block text-[10px] font-mono font-black uppercase tracking-wider px-2 py-0.5 rounded-md mb-1"
-                              style={{
-                                backgroundColor: theme.pillBg,
-                                color: theme.pillText,
-                              }}
-                            >
-                              {p.badge}
-                            </span>
-                          )}
-                          <div className="font-sans font-black text-sm text-[#15191E] leading-tight">
-                            {p.name.replace(/^LUFF\s+Organic\s+/i, '')}
-                          </div>
-                        </div>
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => setActiveIdx(idx)}
+                      style={{ transform: `translateX(${arcX}px)` }}
+                      className={`group flex items-center gap-3.5 text-left py-1.5 px-2 rounded-full transition-all duration-200 relative cursor-pointer ${
+                        isActive
+                          ? 'opacity-100 scale-[1.04]'
+                          : 'opacity-60 hover:opacity-95'
+                      }`}
+                    >
+                      {/* Circle containing the formula/product image */}
+                      <div
+                        className={`relative w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 p-1.5 ${
+                          isActive
+                            ? 'ring-2 ring-[#15191E] shadow-md scale-110'
+                            : 'border border-[#15191E]/20 group-hover:border-[#15191E]/50 group-hover:scale-105'
+                        }`}
+                        style={{
+                          backgroundColor: theme.pillBg,
+                          boxShadow: isActive ? `0 0 16px ${theme.glow}` : undefined,
+                        }}
+                      >
+                        <img
+                          src={p.image}
+                          alt={p.name}
+                          className="w-full h-full object-contain select-none"
+                        />
                       </div>
 
-                      <div className="text-right shrink-0">
-                        <div className="font-sans font-black text-sm text-[#15191E]">
-                          ${p.price.toFixed(0)}
-                        </div>
-                        {inCart > 0 && (
-                          <span className="text-[10px] font-mono font-bold text-[#4A7C59]">
-                            {inCart} in bag
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
+                      {/* Name of the product - NOT enclosed in any div */}
+                      <span
+                        className={`font-sans text-sm sm:text-base tracking-tight transition-colors select-none ${
+                          isActive
+                            ? 'font-black text-[#15191E]'
+                            : 'font-semibold text-[#15191E]/70 group-hover:text-[#15191E]'
+                        }`}
+                      >
+                        {p.name.replace(/^LUFF\s+Organic\s+/i, '').replace(/^LUFF\s+/i, '')}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Center Stage: Floating Dynamic Product Showcase with Ambient Glow */}
-            <div className="lg:col-span-4 flex flex-col items-center justify-center relative py-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeProduct.id}
-                  initial={{ opacity: 0, scale: 0.88, y: 30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.92, y: -20 }}
-                  transition={{ type: 'spring', stiffness: 280, damping: 24 }}
-                  className="relative group cursor-pointer"
-                  onClick={() => onOpenQuickView(activeProduct)}
-                >
-                  {/* Floating Product Image */}
-                  <div className="relative w-64 sm:w-80 h-64 sm:h-80 rounded-3xl overflow-hidden shadow-2xl border-4 bg-white flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.03]"
-                    style={{ borderColor: activeTheme.borderColor }}
+            {/* =========================================================================
+                CENTER STAGE: INSTANT DUAL-MOUNT CROSS-FADE (Zero Display Delay)
+            ========================================================================= */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative py-4">
+              <motion.div
+                animate={{ y: [-5, 5, -5] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative w-full h-80 sm:h-[24rem] flex items-center justify-center cursor-pointer group"
+                onClick={() => onOpenQuickView(activeProduct)}
+              >
+                {/* Pre-mounted Product 0 (Matcha) - Instant opacity transition */}
+                {displayProducts[0] && (
+                  <motion.div
+                    animate={{
+                      opacity: activeIdx === 0 ? 1 : 0,
+                      scale: activeIdx === 0 ? 1 : 0.92,
+                      y: activeIdx === 0 ? 0 : 15,
+                    }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    className={`absolute inset-0 flex items-center justify-center ${
+                      activeIdx === 0 ? 'pointer-events-auto' : 'pointer-events-none'
+                    }`}
                   >
                     <img
-                      src={activeProduct.image}
-                      alt={activeProduct.name}
-                      className="w-full h-full object-cover"
+                      src={displayProducts[0].image}
+                      alt={displayProducts[0].name}
+                      className="w-72 sm:w-[22rem] h-72 sm:h-[22rem] object-contain drop-shadow-[0_24px_45px_rgba(0,0,0,0.18)] transition-transform duration-300 group-hover:scale-105 select-none"
                     />
+                  </motion.div>
+                )}
 
-                    {/* Quick View Hover Pill */}
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-xs">
-                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#15191E] text-xs font-black uppercase tracking-wider shadow-md">
-                        <Eye className="w-3.5 h-3.5 text-[#E53935]" />
-                        <span>Quick Specs</span>
-                      </span>
-                    </div>
-                  </div>
+                {/* Pre-mounted Product 1 (Coffee) - Instant opacity transition */}
+                {displayProducts[1] && (
+                  <motion.div
+                    animate={{
+                      opacity: activeIdx === 1 ? 1 : 0,
+                      scale: activeIdx === 1 ? 1 : 0.92,
+                      y: activeIdx === 1 ? 0 : 15,
+                    }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    className={`absolute inset-0 flex items-center justify-center ${
+                      activeIdx === 1 ? 'pointer-events-auto' : 'pointer-events-none'
+                    }`}
+                  >
+                    <img
+                      src={displayProducts[1].image}
+                      alt={displayProducts[1].name}
+                      className="w-72 sm:w-[22rem] h-72 sm:h-[22rem] object-contain drop-shadow-[0_24px_45px_rgba(0,0,0,0.18)] transition-transform duration-300 group-hover:scale-105 select-none"
+                    />
+                  </motion.div>
+                )}
 
-                  {/* Badges on product */}
-                  {activeProduct.badge && (
-                    <div className="absolute -top-3 -right-3 shadow-lg">
-                      <span
-                        className="px-3 py-1 rounded-full text-xs font-mono font-black uppercase tracking-wider text-white shadow-md"
-                        style={{ backgroundColor: activeTheme.accent }}
-                      >
-                        {activeProduct.badge}
-                      </span>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+                {/* Quick Specs Hover Pill */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 text-[#15191E] text-xs font-black uppercase tracking-wider shadow-lg backdrop-blur-md">
+                    <Eye className="w-3.5 h-3.5 text-[#E53935]" />
+                    <span>Quick Specs</span>
+                  </span>
+                </div>
+              </motion.div>
             </div>
 
-            {/* Right Flank: Detailed Product Intelligence & Purchase Action */}
+            {/* =========================================================================
+                RIGHT FLANK: ROCK-SOLID STABLE CARD (Zero Lag, Zero Layout Shift)
+            ========================================================================= */}
             <div className="lg:col-span-4">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeProduct.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
-                  className="bg-white/95 backdrop-blur-md border border-[#EAE3D8] rounded-3xl p-6 sm:p-7 shadow-lg flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Tags row */}
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {activeProduct.tags.slice(0, 3).map((tag, i) => (
-                        <span
-                          key={i}
-                          className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md bg-[#FAF7F2] text-[#15191E]/80 border border-[#EAE3D8]"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+              <div className="bg-white/90 backdrop-blur-xl border border-[#EAE3D8] rounded-[2rem] p-7 sm:p-8 shadow-xl flex flex-col justify-between min-h-[480px]">
+                
+                {/* Overlapping Content Stack: Both layers share the exact same space */}
+                <div className="grid [grid-template-areas:'stack'] relative">
+                  
+                  {/* Layer 0: Organic Mushroom Matcha */}
+                  <div
+                    style={{ gridArea: 'stack' }}
+                    className={`transition-all duration-300 ease-out flex flex-col ${
+                      activeIdx === 0
+                        ? 'opacity-100 translate-y-0 pointer-events-auto'
+                        : 'opacity-0 translate-y-2 pointer-events-none'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2.5">
+                      <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#4A7C59]">
+                        Formula 01
+                      </span>
+                      <span className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">
+                        30g (~15 Servings)
+                      </span>
                     </div>
 
-                    <h3 className="font-sans font-black text-2xl text-[#15191E] leading-tight mb-2">
-                      {activeProduct.name}
+                    <h3 className="font-sans font-black text-2xl sm:text-3xl text-[#15191E] leading-tight tracking-tight mb-3">
+                      Organic Mushroom Matcha
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-[#15191E]/75 leading-relaxed font-sans mb-4">
-                      {activeProduct.description}
+                    <p className="text-sm text-[#15191E]/75 leading-relaxed font-sans mb-6">
+                      Single-estate Kyoto ceremonial matcha stone-milled with Lion’s Mane & Reishi for calm, jitter-free cognitive flow.
                     </p>
 
-                    {/* Biological Specs & Origin */}
-                    <div className="space-y-2.5 py-3 border-y border-[#EAE3D8] mb-5 text-xs">
-                      {activeProduct.caffeineMg !== undefined && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-500 font-sans">Caffeine / Release:</span>
-                          <span className="font-black text-[#15191E] font-mono">
-                            {activeProduct.caffeineMg}mg Steady Energy
-                          </span>
-                        </div>
-                      )}
-
-                      {activeProduct.lTheanineMg !== undefined && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-500 font-sans">L-Theanine Nootropic:</span>
-                          <span className="font-black text-[#15191E] font-mono">
-                            {activeProduct.lTheanineMg}mg Alpha Calm
-                          </span>
-                        </div>
-                      )}
-
-                      {activeProduct.origin && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-500 font-sans">Single Origin:</span>
-                          <span className="font-black text-[#15191E] font-mono truncate max-w-[170px]">
-                            {activeProduct.origin}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Quantity & Buy Bar */}
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="font-sans font-black text-2xl text-[#15191E]">
-                          ${activeProduct.price.toFixed(0)}.00
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EAE3D8]/80 flex flex-col">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-500">
+                          Caffeine
                         </span>
-                        {activeProduct.volumeOrWeight && (
-                          <span className="text-xs font-mono text-gray-500">
-                            / {activeProduct.volumeOrWeight}
-                          </span>
-                        )}
+                        <span className="font-sans font-black text-lg text-[#15191E] mt-0.5">
+                          45mg
+                          <span className="text-xs font-normal text-gray-500 ml-1">steady</span>
+                        </span>
                       </div>
 
-                      {/* In-cart stepper if already in cart */}
-                      {getQtyInCart(activeProduct.id) > 0 && (
-                        <div className="flex items-center gap-2 bg-[#F4EFE6] px-2.5 py-1 rounded-xl border border-[#EAE3D8]">
-                          <button
-                            onClick={() => onUpdateCartQty(activeProduct.id, -1)}
-                            className="p-1 rounded-md hover:bg-white text-[#15191E]"
-                            aria-label="Decrease quantity"
-                          >
-                            <Minus className="w-3.5 h-3.5" />
-                          </button>
-                          <span className="text-xs font-black text-[#15191E] font-mono px-1">
-                            {getQtyInCart(activeProduct.id)}
-                          </span>
-                          <button
-                            onClick={() => onUpdateCartQty(activeProduct.id, 1)}
-                            className="p-1 rounded-md hover:bg-white text-[#15191E]"
-                            aria-label="Increase quantity"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      )}
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EAE3D8]/80 flex flex-col">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#4A7C59]">
+                          L-Theanine
+                        </span>
+                        <span className="font-sans font-black text-lg text-[#4A7C59] mt-0.5">
+                          60mg
+                          <span className="text-xs font-normal text-gray-500 ml-1">calm</span>
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleAdd(activeProduct)}
-                        className="flex-1 py-3.5 rounded-full text-white text-xs font-extrabold uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
-                        style={{ backgroundColor: activeTheme.accent }}
-                      >
-                        {justAddedId === activeProduct.id ? (
-                          <>
-                            <Check className="w-4 h-4" />
-                            <span>Added to Bag!</span>
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingBag className="w-4 h-4" />
-                            <span>Add to Bag • ${activeProduct.price.toFixed(0)}</span>
-                          </>
-                        )}
-                      </button>
-
-                      <button
-                        onClick={() => onOpenQuickView(activeProduct)}
-                        className="p-3.5 rounded-full bg-[#FAF7F2] hover:bg-[#F4EFE6] border border-[#EAE3D8] text-[#15191E] transition-colors"
-                        title="View Full Ingredients & Brewing Ritual"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
+                    <div className="text-xs font-mono text-gray-600 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#4A7C59]" />
+                      <span>Uji, Kyoto, Japan • Single Estate</span>
                     </div>
                   </div>
-                </motion.div>
-              </AnimatePresence>
+
+                  {/* Layer 1: Organic Mushroom Coffee */}
+                  <div
+                    style={{ gridArea: 'stack' }}
+                    className={`transition-all duration-300 ease-out flex flex-col ${
+                      activeIdx === 1
+                        ? 'opacity-100 translate-y-0 pointer-events-auto'
+                        : 'opacity-0 translate-y-2 pointer-events-none'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2.5">
+                      <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#E53935]">
+                        Formula 02
+                      </span>
+                      <span className="text-[11px] font-mono font-medium text-gray-500 uppercase tracking-wider">
+                        250g Milled
+                      </span>
+                    </div>
+
+                    <h3 className="font-sans font-black text-2xl sm:text-3xl text-[#15191E] leading-tight tracking-tight mb-3">
+                      Organic Mushroom Coffee
+                    </h3>
+
+                    <p className="text-sm text-[#15191E]/75 leading-relaxed font-sans mb-6">
+                      Single-origin Guatemalan dark roast infused with wild Chaga & Cordyceps for clean stamina and low acidity.
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EAE3D8]/80 flex flex-col">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-500">
+                          Caffeine
+                        </span>
+                        <span className="font-sans font-black text-lg text-[#15191E] mt-0.5">
+                          50mg
+                          <span className="text-xs font-normal text-gray-500 ml-1">steady</span>
+                        </span>
+                      </div>
+
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EAE3D8]/80 flex flex-col">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#4A7C59]">
+                          L-Theanine
+                        </span>
+                        <span className="font-sans font-black text-lg text-[#4A7C59] mt-0.5">
+                          30mg
+                          <span className="text-xs font-normal text-gray-500 ml-1">calm</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="text-xs font-mono text-gray-600 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#E53935]" />
+                      <span>Huehuetenango, Guatemala</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Bottom Action Bar */}
+                <div className="pt-5 border-t border-[#EAE3D8] mt-6">
+                  <div className="flex items-baseline justify-between mb-4">
+                    <span className="font-sans font-black text-3xl text-[#15191E] transition-all duration-200">
+                      ${activeProduct.price.toFixed(0)}
+                    </span>
+                    <span className="text-xs font-mono text-[#4A7C59] font-bold">
+                      In Stock • Ships Free
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2.5">
+                    <button
+                      onClick={() => handleAdd(activeProduct)}
+                      className="flex-1 py-4 px-6 rounded-full text-white text-xs font-sans font-black uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                      style={{ backgroundColor: activeTheme.accent }}
+                    >
+                      {justAddedId === activeProduct.id ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          <span>Added to Bag!</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag className="w-4 h-4" />
+                          <span>Add to Bag • ${activeProduct.price.toFixed(0)}</span>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => onOpenQuickView(activeProduct)}
+                      className="p-4 rounded-full bg-[#FAF7F2] hover:bg-[#F4EFE6] border border-[#EAE3D8] text-[#15191E] transition-all hover:scale-105 shadow-2xs cursor-pointer"
+                      title="View Full Ingredients & Brewing Ritual"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
             </div>
 
           </div>
@@ -459,7 +528,7 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
           {/* Bottom Trust Indicators */}
           <div className="mt-8 pt-6 border-t border-[#15191E]/10 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             {[
-              { label: 'Free Eco Shipping on $40+', icon: Sparkles },
+              { label: 'Free Eco Shipping on $40+', icon: Truck },
               { label: '100% Organic & Non-GMO', icon: Leaf },
               { label: '30-Day Money-Back Guarantee', icon: ShieldCheck },
               { label: 'Zero Jitters or Crash', icon: Zap },
@@ -475,6 +544,12 @@ export const ImmersiveProductShowcase: React.FC<ImmersiveProductShowcaseProps> =
           </div>
 
         </div>
+
+        {/* Soft Bottom Transition Gradient into Dark Reviews Section */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#FAF7F2]/40 to-[#15191E] pointer-events-none z-20"
+        />
 
       </div>
     </section>

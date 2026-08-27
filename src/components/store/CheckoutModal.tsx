@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, CreditCard, Lock, CheckCircle2, ShieldCheck, Truck, Sparkles, Tag } from 'lucide-react';
+import { X, CreditCard, Lock, CheckCircle2, ShieldCheck, Truck, Tag } from 'lucide-react';
 import { CartItem, CustomerInfo, Order, ShippingOption, PromoCode } from '../../lib/store/types';
 
 interface CheckoutModalProps {

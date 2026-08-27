@@ -61,7 +61,7 @@ export const HIGHLIGHT_FEATURES: FeatureHighlight[] = [
     title: 'Vibrant Umami Profile',
     subtitle: 'Zero Bitterness Guarantee',
     description: 'Electric bright jade emerald color with an intensely creamy, buttery texture. Delivers sweet oceanic notes and savory umami notes without any harsh astringency.',
-    iconName: 'Sparkles',
+    iconName: 'Leaf',
     tag: 'Ceremonial Grade AAA',
     stats: { label: 'Color Index', value: 'Vivid Jade #74C649' },
     details: [

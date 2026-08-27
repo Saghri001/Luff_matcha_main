@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, CheckCircle2, Quote, Sparkles, ArrowRight, Heart } from 'lucide-react';
+import { Star, CheckCircle2, Quote, ArrowRight, Heart } from 'lucide-react';
 
 export const CustomerReviewsSection: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'matcha' | 'coffee' | 'bundle'>('all');
@@ -85,7 +85,6 @@ export const CustomerReviewsSection: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-3 backdrop-blur-md border border-white/10">
-              <Sparkles className="w-3.5 h-3.5" />
               <span>03 // VERIFIED COMMUNITY EXPERIENCE</span>
             </div>
             <h2 className="font-sans font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">
@@ -190,6 +189,12 @@ export const CustomerReviewsSection: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Soft Bottom Transition Gradient into Cream FAQ Section */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#15191E]/90 to-[#FAF7F2] pointer-events-none z-20"
+      />
     </section>
   );
 };

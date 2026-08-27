@@ -2,17 +2,24 @@ import { useState, useEffect } from 'react';
 import { ProductItem, CartItem, Order, PromoCode, ActiveView, ShippingOption, CustomerInfo } from './types';
 import { INITIAL_PRODUCTS, INITIAL_PROMO_CODES, SHIPPING_OPTIONS } from './products.data';
 
-const PRODUCTS_KEY = 'luff_store_products_v1';
+const PRODUCTS_KEY = 'luff_store_products_v7';
 const ORDERS_KEY = 'luff_store_orders_v1';
 const PROMOS_KEY = 'luff_store_promos_v1';
-const CART_KEY = 'luff_store_cart_v1';
+const CART_KEY = 'luff_store_cart_v5';
+
+const ALLOWED_IDS = new Set(['luff-mushroom-matcha-30g', 'luff-mushroom-coffee-250g']);
 
 export function useLUFFStore() {
-  // 1. Products State
+  // 1. Products State - strictly the 2 core formulas
   const [products, setProducts] = useState<ProductItem[]>(() => {
     try {
       const saved = localStorage.getItem(PRODUCTS_KEY);
-      return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+      if (saved) {
+        const parsed: ProductItem[] = JSON.parse(saved);
+        const filtered = parsed.filter((p) => ALLOWED_IDS.has(p.id));
+        return filtered.length === 2 ? filtered : INITIAL_PRODUCTS;
+      }
+      return INITIAL_PRODUCTS;
     } catch {
       return INITIAL_PRODUCTS;
     }

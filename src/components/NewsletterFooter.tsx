@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, ArrowRight, CheckCircle2, ShieldCheck, Leaf, Heart, Send } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ShieldCheck, Leaf, Heart, Send, Zap } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ActiveView } from '../lib/store/types';
 
@@ -42,7 +42,6 @@ export const NewsletterFooter: React.FC<NewsletterFooterProps> = ({ onNotify, on
         {/* Newsletter Reward Stage */}
         <div className="max-w-3xl mx-auto text-center mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[#E53935] text-xs font-mono font-black uppercase tracking-widest mb-4 backdrop-blur-md border border-white/10">
-            <Sparkles className="w-3.5 h-3.5" />
             <span>THE LUFF FLOW CLUB</span>
           </div>
 
@@ -94,7 +93,7 @@ export const NewsletterFooter: React.FC<NewsletterFooterProps> = ({ onNotify, on
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-10 border-y border-white/10 mb-16 text-center">
           {[
             { title: 'Single-Estate Terroir', sub: 'Uji, Kyoto, Japan', icon: Leaf },
-            { title: '1,500mg Dual-Extract', sub: 'Lion’s Mane, Reishi, Chaga', icon: Sparkles },
+            { title: '1,500mg Dual-Extract', sub: 'Lion’s Mane, Reishi, Chaga', icon: Zap },
             { title: 'Carbon-Neutral DTC', sub: 'Compostable & Recyclable', icon: ShieldCheck },
             { title: '30-Day Pure Guarantee', sub: '100% Risk-Free Refund', icon: Heart },
           ].map((pillar, idx) => {

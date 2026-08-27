@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 interface ToastProps {
   message: string | null;
@@ -18,7 +18,7 @@ export const Toast: React.FC<ToastProps> = ({ message, onClose }) => {
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-[90%] sm:w-auto px-5 py-3.5 rounded-full bg-[#15191E] text-white shadow-2xl border border-gray-700 flex items-center justify-between gap-3 text-xs sm:text-sm font-bold"
         >
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#4A7C59] shrink-0" />
+            <Check className="w-4 h-4 text-[#4A7C59] shrink-0" />
             <span>{message}</span>
           </div>
           <button
