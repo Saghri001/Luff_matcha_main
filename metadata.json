@@ -1,0 +1,6 @@
+{
+  "name": "LUFF Matcha",
+  "description": "Ceremonial matcha for creatives - Single-origin shade-grown matcha drinks, tins, and café landing page.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
